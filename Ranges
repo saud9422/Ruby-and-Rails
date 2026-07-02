@@ -1,0 +1,11 @@
+class Ranges
+    puts (1..5).to_a.inspect 
+    puts (-7..-2).to_a.inspect 
+    puts ('a'..'z').to_a.inspect
+
+    (1..10).each do |i|
+        puts i.inspect
+    end
+
+    (1..9).select { |i| puts i if i % 2 == 0 }
+end 

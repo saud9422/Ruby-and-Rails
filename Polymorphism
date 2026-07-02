@@ -1,0 +1,17 @@
+class Demo
+    attr_accessor :name, :age
+    def initailize(name, age)
+        @name = name
+        @age = age
+    end
+
+    private
+    def show
+        puts "Name: #{@name}, Age: #{@age}"
+    end
+
+
+end
+
+demo=Demo.new
+demo.show

@@ -1,0 +1,8 @@
+class ProcExample
+ square = Proc.new { |n| n * n }
+
+# You can pass it directly to array methods using the `&` operator
+numbers = [1, 2, 3, 4]
+puts numbers.map(&square) # Outputs: [1, 4, 9, 16]
+    end
+end 
