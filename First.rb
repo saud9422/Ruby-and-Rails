@@ -12,4 +12,3 @@ class First
     include FirstModule
 end
 
-puts First::VERSION

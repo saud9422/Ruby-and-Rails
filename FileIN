@@ -1,0 +1,17 @@
+class FileIN
+#     content = File.read('example.txt')
+#     puts content
+#     File.write('example.txt', " what was a day.\n")
+#     puts File.read('example.txt')
+
+#     File.open("example.txt", "w") do |file|
+#   file.puts "Line 1"
+#   file.write "Line 2 without a newline"
+#   puts "Line 3"
+
+ tle =File.new("Demo.txt", "w+");
+    File.write("Demo.txt", "This is a demo file.\n")
+    doc =File.read("Demo.txt")
+    puts doc
+
+end

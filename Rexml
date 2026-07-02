@@ -1,0 +1,14 @@
+require 'rexml/document'
+class demo
+    include REXML
+    info=<<XML
+    <info>
+        <name>Ajay</name>   
+        <age>30</age>
+    </info>
+    XML
+
+    document =Document.new(info)
+    puts document 
+    
+end 
