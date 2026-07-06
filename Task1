@@ -1,0 +1,194 @@
+class UserInfo 
+ 
+  @@arr = Hash.new
+  @@id = 1
+
+  attr_accessor :name, :email, :age, :balance 
+
+  def initialize(name, email, age, balance)
+    @name = name
+    @email = email         
+    @age = age
+    @balance = balance
+  end
+
+
+
+  def self.check_balance 
+        puts "Enter the User ID.."
+        id = gets.chomp.to_i
+        if @@arr.key?(id)
+            puts "The Current Balance for ID #{id} is #{@@arr[id].balance}"
+        else
+            puts "Invalid ID user not found for ID #{id}"
+             puts "
+  
+            " 
+        end
+  end 
+
+  def self.add_balance
+    puts "Enter the User ID..."
+    id = gets.chomp.to_i
+    if @@arr.key?(id)
+      puts "Enter the Amount..."
+      amount = gets.chomp.to_i
+      @@arr[id].balance += amount   
+
+    else 
+        puts "user not found for user ID #{id}"
+         puts "
+  
+            " 
+    end
+  end 
+
+  def self.withdraw_balance
+      puts "Enter the User ID..."
+    id = gets.chomp.to_i
+    if @@arr.key?(id)
+      puts "Enter the Amount..."
+      amount = gets.chomp.to_i
+      if amount <= @@arr[id].balance
+        @@arr[id].balance -=amount 
+      else
+        puts "Insufficeint Balance..."
+         puts "
+ 
+            " 
+      end
+    else 
+        puts "user not found for user ID #{id}"
+         puts "
+  
+            " 
+    end
+  end
+
+
+  def self.create_user
+    puts "Enter user name:"
+    name = gets.chomp
+    puts "Enter user email:"
+    email = gets.chomp
+    puts "Enter user age:"  
+    age = gets.chomp.to_i
+    puts "Enter User Initial Balance:"  
+    balance = gets.chomp.to_i
+
+      user = UserInfo.new(name, email, age, balance)
+    
+    
+      @@arr[@@id] = user
+    puts "User created successfully with ID: #{@@id}"
+     puts "
+    
+            " 
+    @@id += 1
+  end 
+
+  def self.display_user_info
+    puts "Enter the User ID..."
+    id=gets.chomp.to_i
+    if @@arr.key?(id)
+    puts "User ID: #{id}"
+    puts "Name: #{@@arr[id].name}"
+    puts "Email: #{@@arr[id].email}"
+    puts "Age: #{@@arr[id].age}"
+    puts "Balance: #{@@arr[id].balance}"
+     puts "
+   
+            " 
+    else
+        puts "user not found for id #{id}"
+         puts "
+   
+            " 
+    end  
+
+  end
+
+  def self.show_all_users
+    if @@arr.empty?
+      puts "No users created."
+       puts "
+   
+            " 
+      return
+    end
+   
+    @@arr.each do |key, val|
+      puts "User ID: #{key}  Name: #{val.name}  Email: #{val.email}  Balance: #{val.balance}"
+       puts "
+  
+            " 
+    end
+    
+  end
+
+  def self.delete_user
+        puts "Enter the user ID"
+        id = gets.chomp.to_i
+
+        if @@arr.key?(id)
+            @@arr.delete(id)
+            puts "The User is delete having ID #{id}"
+            puts "
+ 
+            " 
+        else
+            puts "User not found for ID #{id}"
+        end
+  end
+
+  def self.display_options
+    puts "1. Create a New User"
+    puts "2. Display User Info"
+    puts "3. Show list of all users"
+    puts "4. Add balance to user account"
+    puts "5. Withdraw balance from user account"
+    puts "6. Show user balance"
+    puts "7. Delete a User"
+    puts "8. Exit"
+    print "Enter your choice: "
+    
+    value = gets.chomp.to_i
+    puts "You selected option #{value}"
+    
+    case value
+    when 1 
+      self.create_user
+      self.display_options
+    when 2 
+      self.display_user_info
+      self.display_options
+    when 3 
+      self.show_all_users
+      self.display_options
+    when 4 
+      self.add_balance
+      self.display_options
+    when 5 
+      self.withdraw_balance
+      self.display_options
+    when 6 
+      self.check_balance
+      self.display_options
+    when 7
+        self.delete_user
+        self.display_options 
+    when 8
+         puts "
+ 
+            " 
+      puts "Exiting the program. Goodbye!"
+        
+    else
+      puts "Invalid choice !"
+      self.display_options
+    end
+    end
+end
+
+
+UserInfo.display_options
