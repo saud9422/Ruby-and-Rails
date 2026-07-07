@@ -1,194 +1,378 @@
-class UserInfo 
- 
-  @@arr = Hash.new
-  @@id = 1
+require 'securerandom'
 
-  attr_accessor :name, :email, :age, :balance 
-
-  def initialize(name, email, age, balance)
-    @name = name
-    @email = email         
-    @age = age
-    @balance = balance
-  end
-
-
-
-  def self.check_balance 
-        puts "Enter the User ID.."
-        id = gets.chomp.to_i
-        if @@arr.key?(id)
-            puts "The Current Balance for ID #{id} is #{@@arr[id].balance}"
-        else
-            puts "Invalid ID user not found for ID #{id}"
-             puts "
-  
-            " 
+class Transaction1
+    @@transaction_history = Hash.new
+    attr_accessor :transaction_id,:sender,:reciever,:time,:amount,:operation
+    
+    def initialize(id, sender,amount,operation,recieve)
+        @transaction_id = id
+        @sender = sender
+        @receiver = receive
+        @amount = amount
+        @time = Time.now
+        @operation = operation
+    end
+    
+    def self.account_transactions
+        puts "Enter the Account Number.."
+        account = gets.chomp
+        @@transaction_history.each do |key,val|
+            
+            if val.sender == account_no
+    
+                puts " the object is #{val}"
+                puts "Transaction ID : #{key}"
+                # puts "Sender Account number : #{val.sender}"
+                # puts "reciever Account Number : #{val.reciever}"
+                # puts "Transaction Amount : #{val.amount}"
+                # puts "Transaction Operation : #{val.operation}"
+            end
         end
-  end 
-
-  def self.add_balance
-    puts "Enter the User ID..."
-    id = gets.chomp.to_i
-    if @@arr.key?(id)
-      puts "Enter the Amount..."
-      amount = gets.chomp.to_i
-      @@arr[id].balance += amount   
-
-    else 
-        puts "user not found for user ID #{id}"
-         puts "
-  
-            " 
-    end
-  end 
-
-  def self.withdraw_balance
-      puts "Enter the User ID..."
-    id = gets.chomp.to_i
-    if @@arr.key?(id)
-      puts "Enter the Amount..."
-      amount = gets.chomp.to_i
-      if amount <= @@arr[id].balance
-        @@arr[id].balance -=amount 
-      else
-        puts "Insufficeint Balance..."
-         puts "
- 
-            " 
-      end
-    else 
-        puts "user not found for user ID #{id}"
-         puts "
-  
-            " 
-    end
-  end
-
-
-  def self.create_user
-    puts "Enter user name:"
-    name = gets.chomp
-    puts "Enter user email:"
-    email = gets.chomp
-    puts "Enter user age:"  
-    age = gets.chomp.to_i
-    puts "Enter User Initial Balance:"  
-    balance = gets.chomp.to_i
-
-      user = UserInfo.new(name, email, age, balance)
-    
-    
-      @@arr[@@id] = user
-    puts "User created successfully with ID: #{@@id}"
-     puts "
-    
-            " 
-    @@id += 1
-  end 
-
-  def self.display_user_info
-    puts "Enter the User ID..."
-    id=gets.chomp.to_i
-    if @@arr.key?(id)
-    puts "User ID: #{id}"
-    puts "Name: #{@@arr[id].name}"
-    puts "Email: #{@@arr[id].email}"
-    puts "Age: #{@@arr[id].age}"
-    puts "Balance: #{@@arr[id].balance}"
-     puts "
-   
-            " 
-    else
-        puts "user not found for id #{id}"
-         puts "
-   
-            " 
-    end  
-
-  end
-
-  def self.show_all_users
-    if @@arr.empty?
-      puts "No users created."
-       puts "
-   
-            " 
-      return
-    end
-   
-    @@arr.each do |key, val|
-      puts "User ID: #{key}  Name: #{val.name}  Email: #{val.email}  Balance: #{val.balance}"
-       puts "
-  
-            " 
-    end
-    
-  end
-
-  def self.delete_user
-        puts "Enter the user ID"
-        id = gets.chomp.to_i
-
-        if @@arr.key?(id)
-            @@arr.delete(id)
-            puts "The User is delete having ID #{id}"
-            puts "
- 
-            " 
-        else
-            puts "User not found for ID #{id}"
-        end
-  end
-
-  def self.display_options
-    puts "1. Create a New User"
-    puts "2. Display User Info"
-    puts "3. Show list of all users"
-    puts "4. Add balance to user account"
-    puts "5. Withdraw balance from user account"
-    puts "6. Show user balance"
-    puts "7. Delete a User"
-    puts "8. Exit"
-    print "Enter your choice: "
-    
-    value = gets.chomp.to_i
-    puts "You selected option #{value}"
-    
-    case value
-    when 1 
-      self.create_user
-      self.display_options
-    when 2 
-      self.display_user_info
-      self.display_options
-    when 3 
-      self.show_all_users
-      self.display_options
-    when 4 
-      self.add_balance
-      self.display_options
-    when 5 
-      self.withdraw_balance
-      self.display_options
-    when 6 
-      self.check_balance
-      self.display_options
-    when 7
-        self.delete_user
-        self.display_options 
-    when 8
-         puts "
- 
-            " 
-      puts "Exiting the program. Goodbye!"
+        puts "in the transaction method"
         
-    else
-      puts "Invalid choice !"
-      self.display_options
     end
+    
+    
+    def self.display_transaction_history
+        if @@transaction_history.empty?
+            puts "No transaction is performed..."
+        else
+            @@transaction_history.each do |key, val|
+                puts "Transaction ID : #{key}"
+                puts "Sender Account Number #{val.sender}"
+                puts "reciever Account Number : #{val.reciever}"
+                puts "transaction Amount : #{val.amount}"
+                puts "operation : #{val.operation}"
+                puts "time : #{val.time}"
+            end
+        end
+        
     end
 end
 
 
+
+
+class UserInfo < Transaction1
+    
+    @@arr = Hash.new
+    @@id = 1
+    IFSC_CODE ="SBI2026"
+    
+    attr_accessor :accountNo, :name, :email, :age, :balance 
+    
+    def initialize(accountNo, name, email, age, balance)
+        @accountNo = accountNo
+        @name = name
+        @email = email         
+        @age = age
+        @balance = balance
+    end
+    
+    def self.update_user
+        puts "What you want to Update..."
+        puts "1. Name"
+        puts "2. Email"
+        puts "3. Age"
+        puts "4. Exit"
+        puts "Enter U R choice..."
+        value = gets.chomp.to_i
+        case value 
+        when 1 
+            self.update_name
+            self.update_user
+        when 2
+            self.update_email
+            self.update_user
+        when 3
+            self.update_age
+            self.update_user
+        when 4
+            puts "Update Operation is Done..."
+            self.display_options
+        else
+            puts "Invalid selection..."
+        end
+        
+    end 
+    
+    def self.update_name
+        puts "Enter the Account Number.."
+        account = gets.chomp
+        @@arr.each do |key,val|
+            if val.accountNo == account
+                puts "Enter the Updated Name ..."
+                name = gets.chomp
+                val.name = name 
+            end
+        end    
+        puts "name Updated successfully..."
+    end
+    
+    def self.update_email
+        puts "Enter the Account Number.."
+        account = gets.chomp
+        @@arr.each do |key,val|
+            if val.accountNo == account
+                puts "Enter the Updated email ..."
+                email = gets.chomp
+                val.email = email
+            end
+        end    
+        puts "email Updated successfully..."
+    end
+    
+    def self.update_age
+        puts "Enter the Account Number.."
+        account = gets.chomp
+        @@arr.each do |key,val|
+            if val.accountNo == account
+                puts "Enter the Updated age ..."
+                age = gets.chomp.to_i
+                val.age = age
+            end
+        end    
+        puts "age Updated successfully..."
+    end
+    
+    
+    
+    def self.check_balance 
+        puts "Enter the Account Number.."
+        account = gets.chomp
+        @@arr.each do |key, val|
+            if val.accountNo == account
+                puts "Acount Number #{account} has balance : #{val.balance}"
+            else
+                puts "The Users Acount is not found..."
+            end
+        end
+    end
+    
+    def self.add_balance
+        puts "Enter the Account Number.."
+        account = gets.chomp
+        amount = 0
+        @@arr.each do |key, val|
+            if val.accountNo == account
+                puts "Enter the Amount.."
+                amount = gets.chomp.to_i
+                val.balance += amount
+            end
+        end
+        puts "Balance deposite successfully.."
+        id = SecureRandom.random_number(10**3)
+        t1 = Transaction1.new(id,accout,amount,"deposit","No Recieve Account")
+        @@transaction_history[id] = t1
+        
+    end    
+    
+    def self.withdraw_balance
+        puts "Enter the Account Number..."
+        account = gets.chomp
+        amount = 0
+        @@arr.each do |key , val|
+            if val.accountNo == account
+                puts "Enter the Amount..."
+                amount = gets.chomp.to_i
+                val.balance -= amount
+            end
+            
+            
+        end
+        puts "Balance withdraw successfully.."
+        id = SecureRandom.random_number(10**3)
+        t1 = Transaction1.new(id,accout,amount,"withdraw","No Recieve Account")
+        @@transaction_history[id] = t1
+        
+    end  
+    
+    def self.create_user
+        puts "Enter user name:"
+        name = gets.chomp
+        puts "Enter user email:"
+        email = gets.chomp
+        puts "Enter user age:"  
+        age = gets.chomp.to_i
+        puts "Enter User Initial Balance:"  
+        balance = gets.chomp.to_i
+        year = Time.now.year
+        accountNo = "#{year}00#{@@id}"
+        
+        user = UserInfo.new(accountNo, name, email, age, balance)
+        
+        
+        @@arr[@@id] = user
+        puts "User created successfully with Account Number: #{accountNo}"
+        puts "
+    
+            " 
+        @@id += 1
+    end 
+    
+    def self.display_user_info
+        puts "Enter the Account Number..."
+        account=gets.chomp.to_i
+        @@arr.each do |key, val|
+            if val.accountNo==account
+                puts "User ID: #{key}"
+                puts "Account no: #{val.accountNo}"
+                puts "IFSC code: #{IFSC_CODE}"
+                puts "Name: #{val.name}"
+                puts "Email: #{val.email}"
+                puts "Age: #{val.age}"
+                puts "Balance: #{val.balance}"
+                puts "
+   
+             " 
+            else
+                
+                
+            end
+            puts "
+   
+            " 
+        end  
+        
+    end
+    
+    def self.show_all_users
+        if @@arr.empty?
+            puts "No users created."
+            puts "
+   
+            " 
+            return
+        end
+        
+        @@arr.each do |key, val|
+            puts "Account Number: #{val.accountNo} User ID: #{key}  Name: #{val.name}  Age: #{val.age} Email: #{val.email}  Balance: #{val.balance}"
+            
+        end
+        
+    end
+    
+    def self.delete_user
+        puts "Enter the Account Number..."
+        account = gets.chomp.to_i
+        @@arr.each do |key,val|
+            if val.accountNo == account
+                @@arr.delete(key)
+                puts "The User is deleted with account number #{val.accountNo}"
+            end
+        end
+    end
+    
+    def self.transaction 
+        puts "Enter the Sender Account number..."
+        sender = gets.chomp
+        
+        puts "Enter the Recieve Account number..."
+        recieve = gets.chomp
+        amount = 0
+        if sender == recieve
+            puts "Both Account are same Different account number is required.."
+        else
+            @@arr.each do |key,val|
+                if val.accountNo == sender 
+                    puts "The Sender current balance is #{val.balance}"
+                    puts "Enter the Amount..."
+                    amount = gets.chomp.to_i
+                    val.balance -= amount
+                    @@arr.each do |key,val|
+                        if val.accountNo == recieve
+                            val.balance += amount 
+                        end
+                        
+                    end
+                    
+                end
+            end 
+            transfer = "Transfer"    
+            puts "Transaction Successfull"
+            id = SecureRandom.random_number(10**3)
+            t2 = Transaction1.new(id,sender,amount,transfer,recieve)
+            @@transaction_history[id] = t2
+            
+        end
+        
+    end 
+    
+    
+    
+    
+    
+    def self.display_options
+        puts "1. Create a New User"
+        puts "2. Display User Info"
+        puts "3. Show list of all users"
+        puts "4. Add balance to user account"
+        puts "5. Withdraw balance from user account"
+        puts "6. Show user balance"
+        puts "7. Delete a User"
+        puts "8. Make Transaction"
+        puts "9. Update User Info"
+        puts "10. View Transaction"
+        puts "11. View Account Transaction"
+        puts "12. Exit"
+        print "Enter your choice: "
+        
+        value = gets.chomp.to_i
+        puts "You selected option #{value}"
+        
+        case value
+        when 1 
+            self.create_user
+            self.display_options
+        when 2 
+            self.display_user_info
+            self.display_options
+        when 3 
+            self.show_all_users
+            self.display_options
+        when 4 
+            self.add_balance
+            self.display_options
+        when 5 
+            self.withdraw_balance
+            self.display_options
+        when 6 
+            self.check_balance
+            self.display_options
+        when 7
+            self.delete_user
+            self.display_options 
+        when 8
+            self.transaction
+            self.display_options    
+            
+        when 9
+            self.update_user
+            self.display_options
+        when 10
+            self.display_transaction_history
+            self.display_options
+            
+        when 11
+            self.account_transactions
+            self.display_options
+        when 11
+            puts "
+ 
+            " 
+            puts "Exiting the program. Goodbye!"
+            
+        else
+            puts "Invalid choice !"
+            self.display_options
+        end
+    end
+    
+    
+end
+
 UserInfo.display_options
+
+
+
+

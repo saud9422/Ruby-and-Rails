@@ -1,0 +1,15 @@
+class Demo
+    def add(i)
+        return if i>100
+          puts i
+          i++
+
+           add(i+1)
+        end
+       
+    end
+
+    add(0)
+      
+end 
+

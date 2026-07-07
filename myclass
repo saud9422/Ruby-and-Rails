@@ -1,0 +1,9 @@
+require 'date'
+class Times
+    def curtime
+   puts Time.now.year
+    end
+end
+
+obj =Times.new
+obj.curtime
