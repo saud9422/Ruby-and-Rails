@@ -2,15 +2,15 @@ require 'securerandom'
 
 class Transaction1
     @@transaction_history = Hash.new
-    attr_accessor :transaction_id,:sender,:reciever,:time,:amount,:operation
+    attr_accessor :transaction_id,:sender,:receiver,:time,:amount,:operation
     
     def initialize(id, sender,amount,operation,recieve)
         @transaction_id = id
         @sender = sender
-        @receiver = receive
         @amount = amount
         @time = Time.now
         @operation = operation
+        @receiver = recieve
     end
     
     def self.account_transactions
@@ -18,14 +18,17 @@ class Transaction1
         account = gets.chomp
         @@transaction_history.each do |key,val|
             
-            if val.sender == account_no
-    
-                puts " the object is #{val}"
+            if val.sender == account
+                puts "
+                "
                 puts "Transaction ID : #{key}"
-                # puts "Sender Account number : #{val.sender}"
-                # puts "reciever Account Number : #{val.reciever}"
-                # puts "Transaction Amount : #{val.amount}"
-                # puts "Transaction Operation : #{val.operation}"
+                puts " objects #{val.inspect}"
+                puts "Sender Account number : #{val.sender}"
+                puts "reciever Account Number : #{val.receiver}"
+                puts "Transaction Amount : #{val.amount}"
+                puts "Transaction Operation : #{val.operation}"
+                puts "
+                "
             end
         end
         puts "in the transaction method"
@@ -38,12 +41,16 @@ class Transaction1
             puts "No transaction is performed..."
         else
             @@transaction_history.each do |key, val|
+                  puts "
+                "
                 puts "Transaction ID : #{key}"
                 puts "Sender Account Number #{val.sender}"
-                puts "reciever Account Number : #{val.reciever}"
+                puts "reciever Account Number : #{val.receiver}"
                 puts "transaction Amount : #{val.amount}"
                 puts "operation : #{val.operation}"
                 puts "time : #{val.time}"
+                  puts "
+                "
             end
         end
         
@@ -106,7 +113,7 @@ class UserInfo < Transaction1
                 val.name = name 
             end
         end    
-        puts "name Updated successfully..."
+        puts "Name Updated Successfully..."
     end
     
     def self.update_email
@@ -161,8 +168,10 @@ class UserInfo < Transaction1
             end
         end
         puts "Balance deposite successfully.."
-        id = SecureRandom.random_number(10**3)
-        t1 = Transaction1.new(id,accout,amount,"deposit","No Recieve Account")
+        id = SecureRandom.random_number(10**3)  
+        operation = "Deposit"
+        receive = ""
+        t1 = Transaction1.new(id,account,amount,operation,receive)
         @@transaction_history[id] = t1
         
     end    
@@ -182,7 +191,9 @@ class UserInfo < Transaction1
         end
         puts "Balance withdraw successfully.."
         id = SecureRandom.random_number(10**3)
-        t1 = Transaction1.new(id,accout,amount,"withdraw","No Recieve Account")
+        operation = "Withdraw"
+        receive = ""
+        t1 = Transaction1.new(id,account,amount,operation,receive)
         @@transaction_history[id] = t1
         
     end  
@@ -192,8 +203,15 @@ class UserInfo < Transaction1
         name = gets.chomp
         puts "Enter user email:"
         email = gets.chomp
+        
+        if !email.match(/@gmail.com/) 
+            raise "Email format is wrong..."
+        end
         puts "Enter user age:"  
         age = gets.chomp.to_i
+        if age < 0 && age >100
+            raise "the Age must be between 0 to 100.."
+        end
         puts "Enter User Initial Balance:"  
         balance = gets.chomp.to_i
         year = Time.now.year
@@ -212,7 +230,7 @@ class UserInfo < Transaction1
     
     def self.display_user_info
         puts "Enter the Account Number..."
-        account=gets.chomp.to_i
+        account=gets.chomp
         @@arr.each do |key, val|
             if val.accountNo==account
                 puts "User ID: #{key}"
@@ -254,7 +272,7 @@ class UserInfo < Transaction1
     
     def self.delete_user
         puts "Enter the Account Number..."
-        account = gets.chomp.to_i
+        account = gets.chomp
         @@arr.each do |key,val|
             if val.accountNo == account
                 @@arr.delete(key)
@@ -278,7 +296,11 @@ class UserInfo < Transaction1
                     puts "The Sender current balance is #{val.balance}"
                     puts "Enter the Amount..."
                     amount = gets.chomp.to_i
+                    if val.balance < amount
+                        raise "Insufficient Balance!"
+                    end
                     val.balance -= amount
+
                     @@arr.each do |key,val|
                         if val.accountNo == recieve
                             val.balance += amount 
@@ -312,7 +334,7 @@ class UserInfo < Transaction1
         puts "7. Delete a User"
         puts "8. Make Transaction"
         puts "9. Update User Info"
-        puts "10. View Transaction"
+        puts "10. View All Transaction"
         puts "11. View Account Transaction"
         puts "12. Exit"
         print "Enter your choice: "
@@ -356,7 +378,8 @@ class UserInfo < Transaction1
         when 11
             self.account_transactions
             self.display_options
-        when 11
+
+        when 12
             puts "
  
             " 
